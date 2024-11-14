@@ -7,12 +7,10 @@ import {
   CardHeader,
   Input,
 } from "@nextui-org/react";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">

@@ -1,5 +1,5 @@
-import { Button, Image, User } from "@nextui-org/react";
-import { ArrowLeft, Link, ShoppingCart } from "lucide-react";
+import { Button, Image } from "@nextui-org/react";
+import { ArrowLeft, ShoppingCart } from "lucide-react";
 import React from "react";
 
 export default function ShirtPage() {
