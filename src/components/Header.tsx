@@ -7,8 +7,10 @@ import {
   Link,
   Button,
 } from "@nextui-org/react";
+import { useTransitionRouter } from "next-view-transitions";
 
 export default function Header() {
+  const router = useTransitionRouter();
   return (
     <Navbar position="static">
       <NavbarBrand>
@@ -16,22 +18,22 @@ export default function Header() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive>
-          <Link color="foreground" href="#inicio">
+          <Link color="foreground" href="/#inicio">
             Inicio
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#diseños">
+          <Link color="foreground" href="/#diseños">
             Diseños
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#personalizar">
+          <Link color="foreground" href="/#personalizar">
             Personalizar
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#sobre-nosotros">
+          <Link color="foreground" href="/#sobre-nosotros">
             Sobre Nosotros
           </Link>
         </NavbarItem>
@@ -41,7 +43,7 @@ export default function Header() {
           <Button
             color="primary"
             variant="solid"
-            onClick={() => (window.location.href = "/login")}
+            onClick={() => router.push("/login")}
           >
             Login
           </Button>

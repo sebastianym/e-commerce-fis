@@ -3,8 +3,10 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Button } from "@nextui-org/react";
 import { ChevronRight, Star } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 
 export default function Home() {
+  const router = useTransitionRouter();
   return (
     <main className="min-h-screen">
       {/* Encabezado */}
@@ -110,9 +112,9 @@ export default function Home() {
                 className="bg-white rounded-lg shadow-md overflow-hidden"
               >
                 <img
-                  src={`https://static.vecteezy.com/system/resources/previews/008/847/318/non_2x/isolated-black-t-shirt-front-free-png.png`}
+                  src={`https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png`}
                   alt={`Diseño ${item}`}
-                  className="w-full h-fit object-cover"
+                  className="w-fit h-fit object-cover"
                 />
                 <div className="p-4">
                   <h3 className="font-semibold mb-2">Diseño {item}</h3>
@@ -122,7 +124,10 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center mt-8">
-            <Button className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition duration-300">
+            <Button
+              className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition duration-300"
+              onClick={() => router.push("/printsCatalogue")}
+            >
               Ver Más Diseños
             </Button>
           </div>
@@ -162,8 +167,9 @@ export default function Home() {
                   <span>Vista previa en tiempo real</span>
                 </li>
               </ul>
-              <Button className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300"
-                onClick={() => window.location.href = "/shirtPage"}
+              <Button
+                className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300"
+                onClick={() => router.push("/shirtPage")}
               >
                 Comenzar a Personalizar
               </Button>
