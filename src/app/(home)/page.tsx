@@ -1,6 +1,6 @@
 "use client";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import { Button } from "@nextui-org/react";
 import { ChevronRight, Star } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
@@ -9,9 +9,6 @@ export default function Home() {
   const router = useTransitionRouter();
   return (
     <main className="min-h-screen">
-      {/* Encabezado */}
-      <Header />
-
       {/* Banner principal */}
       <section className="bg-indigo-600 text-white py-20">
         <div className="container mx-auto px-4 text-center">

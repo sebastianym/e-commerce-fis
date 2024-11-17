@@ -1,17 +1,15 @@
 "use client";
+import LoginForm from "@/components/auth/LoginForm";
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
-  Input,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
-import { LogIn } from "lucide-react";
 import { Link } from "next-view-transitions";
 
 export default function Login() {
@@ -57,45 +55,7 @@ export default function Login() {
           </p>
         </CardHeader>
         <CardBody className="p-6 pt-0">
-          <form className="space-y-4">
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Correo Electrónico
-              </label>
-              <Input
-                id="email"
-                placeholder="tu@ejemplo.com"
-                type="email"
-                autoCapitalize="none"
-                autoComplete="email"
-                autoCorrect="off"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="password">Contraseña</label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={"password"}
-                  autoCapitalize="none"
-                  autoComplete="current-password"
-                  autoCorrect="off"
-                  placeholder="********"
-                  required
-                />
-              </div>
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              <LogIn className="mr-2 h-4 w-4" /> Iniciar Sesión
-            </Button>
-          </form>
+          <LoginForm />
         </CardBody>
         <CardFooter className="items-center p-6 pt-0 flex flex-col space-y-2">
           <Link

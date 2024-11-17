@@ -11,13 +11,17 @@
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
     "framer-motion": "^11.11.15",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
     "next": "14.2.18",
     "next-view-transitions": "^0.3.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

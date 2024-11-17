@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NextUIProvider } from "@nextui-org/react";
 import { ViewTransitions } from "next-view-transitions";
-import "./globals.css";
+import "../assets/globals.css";
 
 export const metadata: Metadata = {
   title: "E-commerce FIS",
