@@ -1,24 +1,29 @@
 "use server";
 
-import { loginService } from "@/data/services/auth/loginService";
-import { getRoleService } from "@/data/services/auth/getRoleService";
+import { registerService } from "@/data/services/auth/registerService";
 import { config } from "@/lib/config/auth/cookieConfig";
-import { schemaLogin } from "@/lib/schemas/schemaLogin";
+import { schemaRegister } from "@/lib/schemas/schemaRegister";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const loginAction = async (prevState: any, formData: FormData) => {
+export const registerAction = async (prevState: any, formData: FormData) => {
   let redirectPath: string | null = null;
 
   try {
-    const validatedFields = schemaLogin.safeParse({
-      identifier: formData.get("identifier"),
+    const validatedFields = schemaRegister.safeParse({
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      username: formData.get("username"),
       password: formData.get("password"),
     });
 
     if (
       !validatedFields.success ||
-      !validatedFields.data.identifier ||
+      !validatedFields.data.firstName ||
+      !validatedFields.data.lastName ||
+      !validatedFields.data.email ||
+      !validatedFields.data.username ||
       !validatedFields.data.password
     ) {
       return {
@@ -29,8 +34,11 @@ export const loginAction = async (prevState: any, formData: FormData) => {
       };
     }
 
-    const responseData = await loginService({
-      identifier: validatedFields.data.identifier,
+    const responseData = await registerService({
+      firstName: validatedFields.data.firstName,
+      lastName: validatedFields.data.lastName,
+      email: validatedFields.data.email,
+      username: validatedFields.data.username,
       password: validatedFields.data.password,
     });
 
@@ -55,24 +63,7 @@ export const loginAction = async (prevState: any, formData: FormData) => {
     if (responseData.jwt) {
       cookies().set("jwt", responseData.jwt, config);
 
-      const responseUser = await getRoleService();
-
-      if (responseUser.role) {
-
-        if (responseUser.role.type === "administrador") {
-          redirectPath = `/admin`;
-        }
-
-        if (responseUser.role.type === "artista") {
-          redirectPath = `/`;
-        }
-
-        if (responseUser.role.type === "authenticated") {
-          redirectPath = `/`;
-        }
-      } else{
-        redirectPath = `/`;
-      }
+      redirectPath = `/`;
     }
   } catch (error) {
     console.error("Login action error:", error);

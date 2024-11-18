@@ -2,6 +2,7 @@
 import { Button, Image } from "@nextui-org/react";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import React from "react";
+import { LogoutButton } from "@/components/custom/LogoutButton";
 
 export default function ArtistPage() {
 
@@ -64,13 +65,16 @@ export default function ArtistPage() {
     return (
         <div className="min-h-screen">
             <div className="container mx-auto px-4 py-8">
-                <a
-                    href="/"
-                    className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6"
-                >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Volver al catálogo
-                </a>
+                <div className="flex items-center justify-between mb-6">
+                    <a
+                        href="/"
+                        className="inline-flex items-center text-indigo-600 hover:text-indigo-800"
+                    >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Volver al catálogo
+                    </a>
+                    <LogoutButton />
+                </div>
                 <div className="container mx-auto p-10 text-center flex flex-col items-center justify-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4">
                         Página Administrador
