@@ -57,23 +57,21 @@ export const loginAction = async (prevState: any, formData: FormData) => {
 
       const responseUser = await getRoleService();
 
-      if (responseUser.role) {
+      if (responseUser.role.type === "administrador") {
+        redirectPath = `/admin`;
+      }
 
-        if (responseUser.role.type === "administrador") {
-          redirectPath = `/admin`;
-        }
+      if (responseUser.role.type === "artista") {
+        redirectPath = `/artist`;
+      }
 
-        if (responseUser.role.type === "artista") {
-          redirectPath = `/`;
-        }
-
-        if (responseUser.role.type === "authenticated") {
-          redirectPath = `/`;
-        }
-      } else{
+      if (responseUser.role.type === "authenticated") {
         redirectPath = `/`;
       }
+    } else {
+      redirectPath = `/`;
     }
+
   } catch (error) {
     console.error("Login action error:", error);
     throw error;

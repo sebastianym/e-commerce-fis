@@ -15,8 +15,8 @@ export default function ArtistPage() {
     const [asignarRole, setAsignarRole] = useState<string>("");
 
     const [camisetas, setCamisetas] = useState<CamisetaGetModel[]>([]); // Estado para almacenar las camisetas
-    const [loading, setLoading] = useState(true); // Estado para manejar el estado de carga
-    const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchCamisetas = async () => {
@@ -25,7 +25,7 @@ export default function ArtistPage() {
                 const response = await fetchGET({
                     url,
                     error: "Error get camisetas",
-                }); // Cambia por tu URL
+                });
 
                 setCamisetas(response.data); // Asume que data es un array de camisetas
             } catch (error) {
@@ -93,7 +93,7 @@ export default function ArtistPage() {
                 url,
                 error: "Error al Eliminar Camiseta",
             });
-            console.log("Role asignado con éxito:", response);
+            console.log("Camiseta eliminada con éxito:", response);
             window.alert("Camiseta eliminada con éxito");
             window.location.reload();
         } catch (error) {

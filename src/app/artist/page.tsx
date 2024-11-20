@@ -1,64 +1,136 @@
 "use client";
 import { Button, Image } from "@nextui-org/react";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchFile } from "@/data/services/fetchFile";
+import { fetchGET } from "@/data/services/fetchGET";
+import { fetchPOST } from "@/data/services/fetchPOST";
+import { fetchDELETE } from "@/data/services/fetchDELETE";
+import { StampPostModel, StampGetModel } from "@/lib/schemas/schemasStamp";
 
 export default function ArtistPage() {
+
+    const [stamps, setStamps] = useState<StampGetModel[]>([]); // Estado para almacenar las camisetas
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchEstampas = async () => {
+            try {
+                const url = "/api/stamps?populate=*"
+                const response = await fetchGET({
+                    url,
+                    error: "Error get camisetas",
+                });
+                const data = response.data;
+
+                // Validar y mapear los datos para ajustarlos al modelo
+                const mappedStamps: StampGetModel[] = data.map((item: any) => ({
+                    id: item.id,
+                    name: item.attributes.name,
+                    description: item.attributes.description,
+                    rating: item.attributes.rating,
+                    image: item.attributes.image.data.attributes.url,
+
+                }));
+                console.log(mappedStamps)
+                setStamps(mappedStamps); // Asume que data es un array de camisetas
+            } catch (error) {
+                console.error(error);
+                setError("Hubo un problema al cargar las estampas.");
+            } finally {
+                setLoading(false); // Finaliza el estado de carga
+            }
+        };
+
+        fetchEstampas();
+    }, []);
+
+    if (loading) {
+        return <p>Cargando Stamps...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.target as HTMLFormElement);
 
-        // Extraer solo el archivo para la primera petición
-        const file = formData.get('file');
-        const firstRequestFormData = new FormData();
-        firstRequestFormData.append('file', file as Blob);
+        const file = formData.get('files');
+        const fileForm = new FormData();
+        fileForm.append('files', file as Blob);
 
         try {
-
-            const response = await fetch('https://stripe-backend-bojy.onrender.com/api/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzMxNjE0ODQ4LCJleHAiOjE3MzQyMDY4NDh9.x6aiJgKsxqHdpNK-s-Zq-wYcRkWaDt-LnTQ_5waTbUA'
-                },
-                body: firstRequestFormData
+            let url = "/api/upload"
+            const response = await fetchFile({
+                url,
+                fileForm,
+                error: "Error al subir imagen"
             });
 
-            if (!response.ok) {
-                throw new Error("Error en la carga de archivo");
-            }
+            console.log("Respuesta 1: " + response)
 
-            // Obtener el ID del primer objeto en la respuesta
-            const data = await response.json();
-            const image = data[0]?.id; // Solo obtener el id del primer objeto
+            const image = response[0]?.id;
 
-            // Extraer otros datos del formulario para la segunda petición
-            const name = formData.get('name');
-            const description = formData.get('description');
-            const rating = 0;
+            const body: StampPostModel = {
+                data: {
+                    name: formData.get('name') as string,
+                    description: formData.get('description') as string,
+                    rating: 0,
+                    image: image
+                }
+            };
 
+            url = "/api/stamps"
             // Segunda petición: usa `id`, `name` y `age`
-            const secondResponse = await fetch('https://stripe-backend-bojy.onrender.com/api/stamps', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzMxNjE0ODQ4LCJleHAiOjE3MzQyMDY4NDh9.x6aiJgKsxqHdpNK-s-Zq-wYcRkWaDt-LnTQ_5waTbUA'
-                },
-                body: JSON.stringify({ data: { image, name, description, rating } })
+            const secondResponse = await fetchPOST<StampPostModel>({
+                url,
+                body,
+                error: "Error al crear la Estampa"
             });
-
-            if (!secondResponse.ok) {
-                throw new Error("Error en la segunda petición");
-            }
-
-            const secondData = await secondResponse.json();
-            console.log("Respuesta de la segunda petición:", secondData);
+            console.log(secondResponse)
+            window.alert("Estampa creada con exito")
+            window.location.reload()
         } catch (error) {
             console.error("Hubo un error:", error);
+            window.alert("Hubo un error:" + error);
+            window.location.reload();
         }
 
     };
+
+    const stampDeleteSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const id = formData.get("id");
+        let url = `/api/stamps/${id}?populate=*`
+
+        try {
+
+            const response = await fetchDELETE({
+                url,
+                error: "Error al Eliminar estampa",
+            });
+            const id_image = response.data.attributes.image.data.id;
+            url = `/api/upload/files/${id_image}`
+
+            const imageDelete = await fetchDELETE({
+                url,
+                error: "Error al Eliminar estampa",
+            });
+            console.log("Estampa eliminada con éxito:", response, imageDelete);
+            window.alert("Estampa eliminada con éxito");
+            window.location.reload();
+        } catch (error) {
+            console.error("Hubo un error:", error);
+            window.alert("Hubo un error:" + error);
+            window.location.reload();
+        }
+    }
 
     return (
         <div className="min-h-screen">
@@ -79,11 +151,20 @@ export default function ArtistPage() {
                     </h3>
                     {/* Formulario de carga de archivos */}
                     <form onSubmit={handleSubmit} className="mb-6 flex flex-col space-y-4">
-                        <input type="file" name="file" className="p-2 border rounded w-64" />
+                        <input type="file" name="files" className="p-2 border rounded w-64" />
                         <input type="text" name="name" placeholder="Nombre Estampa" className="p-2 border rounded w-64" />
                         <input type="text" name="description" placeholder="Descripción Estampa" className="p-2 border rounded w-64" />
                         <Button type="submit" color="primary" className="w-64">
                             Crear Estampa
+                        </Button>
+                    </form>
+                    <h3 className="text-3xl font-bold text-center mb-12">
+                        Eliminar estampa
+                    </h3>
+                    <form onSubmit={stampDeleteSubmit} className="mb-6 flex flex-col space-y-4">
+                        <input type="number" name="id" placeholder="id" className="p-2 border rounded w-64" />
+                        <Button type="submit" color="primary" className="w-64">
+                            Eliminar estampa
                         </Button>
                     </form>
                 </div>
@@ -92,19 +173,20 @@ export default function ArtistPage() {
                         Mis Estampas
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[1, 2, 3, 4].map((item) => (
+                        {stamps.map((item) => (
                             <div
-                                key={item}
+                                key={item.id}
                                 className="bg-white rounded-lg shadow-md overflow-hidden"
                             >
                                 <img
-                                    src={`https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png`}
-                                    alt={`Estampa ${item}`}
+                                    src={item.image}
+                                    alt={`Estampa ${item.name}`}
                                     className="w-full h-fit object-cover"
                                 />
                                 <div className="p-4">
-                                    <h3 className="font-semibold mb-2">Estampa {item}</h3>
-                                    <p className="text-indigo-600 font-bold">Descripción {item}</p>
+                                    <h3 className="font-semibold mb-2">id: {item.id}</h3>
+                                    <h3 className="font-semibold mb-2">{item.name}</h3>
+                                    <p className="text-indigo-600 font-bold">Descripción: {item.description}</p>
                                 </div>
                             </div>
                         ))}

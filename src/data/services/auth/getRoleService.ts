@@ -2,7 +2,7 @@ import { getAuthToken } from "../user/getToken";
 
 export const getRoleService = async () => {
   const url = new URL(
-    "/api/users/me?populate=*",
+    "/api/user/me?populate=*",
     process.env.NEXT_PUBLIC_BACKEND_URL
   );
 
