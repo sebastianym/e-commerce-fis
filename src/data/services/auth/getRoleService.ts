@@ -19,7 +19,7 @@ export const getRoleService = async () => {
     });
 
     const data = await response.json();
-
+    console.log("Usuario encontrado:", data);
     return data;
   } catch (error) {
     console.error("Error al buscar usuario:", error);

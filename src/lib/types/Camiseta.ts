@@ -14,6 +14,7 @@ export interface CamisetaGetModel {
         is_active: boolean;
     };
 }
+
 export interface CamisetaPostModel {
     data: {
         name: string;

@@ -4,7 +4,6 @@ export const schemaRegister = z.object({
   firstName: z.string().min(1, { message: "El nombre no es válido" }),
   lastName: z.string().min(1, { message: "El apellido no es válido" }),
   email: z.string()
-    .min(1, { message: "El email no puede estar vacío" })
     .email({ message: "El email no es válido" }),
   username: z.string().min(5, { message: "El username no es válido" }),
   password: z

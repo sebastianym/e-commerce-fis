@@ -16,7 +16,7 @@ export function LogoutButton() {
 			console.error("Error during logout", error);
 		}
 
-		router.push("/iniciar-sesion");
+		router.push("/");
 	};
 
 

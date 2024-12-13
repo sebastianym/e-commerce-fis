@@ -6,7 +6,7 @@ import { fetchFile } from "@/data/services/fetchFile";
 import { fetchGET } from "@/data/services/fetchGET";
 import { fetchPOST } from "@/data/services/fetchPOST";
 import { fetchDELETE } from "@/data/services/fetchDELETE";
-import { StampPostModel, StampGetModel } from "@/lib/schemas/schemasStamp";
+import { StampPostModel, StampGetModel } from "@/lib/types/Stamp";
 
 export default function ArtistPage() {
 

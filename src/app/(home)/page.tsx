@@ -1,12 +1,28 @@
 "use client";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { getRoleService } from "@/data/services/auth/getRoleService";
 import { Button } from "@nextui-org/react";
 import { ChevronRight, Star } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [role, setRole] = useState("");
   const router = useTransitionRouter();
+  //authenticated
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getRoleService();
+      console.log(userData);
+      if (userData.role) {
+        setRole(userData.role);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <main className="min-h-screen">
       {/* Banner principal */}
@@ -18,7 +34,13 @@ export default function Home() {
           <p className="text-xl mb-8">
             Diseña y personaliza tu propia camiseta en minutos
           </p>
-          <Button className="bg-white text-indigo-600 font-bold py-3 px-8 rounded-full hover:bg-indigo-50 transition duration-300">
+          <Button
+            className="bg-white text-indigo-600 font-bold py-3 px-8 rounded-full hover:bg-indigo-50 transition duration-300"
+            onClick={() => {
+              !role && router.push("/login");
+              role && role === "authenticated" && router.push("/client");
+            }}
+          >
             Empezar a Diseñar
           </Button>
         </div>
@@ -123,7 +145,12 @@ export default function Home() {
           <div className="text-center mt-8">
             <Button
               className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition duration-300"
-              onClick={() => router.push("/printsCatalogue")}
+              onClick={() => {
+                !role && router.push("/login");
+                role &&
+                  role === "authenticated" &&
+                  router.push("/printsCatalogue");
+              }}
             >
               Ver Más Diseños
             </Button>
@@ -166,7 +193,10 @@ export default function Home() {
               </ul>
               <Button
                 className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300"
-                onClick={() => router.push("/shirtPage")}
+                onClick={() => {
+                  !role && router.push("/login");
+                  role && role === "authenticated" && router.push("/shirtPage");
+                }}
               >
                 Comenzar a Personalizar
               </Button>

@@ -19,7 +19,7 @@ export default function LoginForm() {
       <div className="space-y-2">
         <label
           htmlFor="identifier"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="block text-sm font-medium text-gray-700 mb-1"
         >
           Identificador
         </label>
@@ -31,13 +31,14 @@ export default function LoginForm() {
           autoCapitalize="none"
           autoComplete="identifier"
           autoCorrect="off"
+          className="w-full"
         />
         <ZodErrors error={formState?.zodErrors?.identifier} />
       </div>
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="block text-sm font-medium text-gray-700 mb-1"
         >
           Contraseña
         </label>
@@ -50,13 +51,14 @@ export default function LoginForm() {
             autoComplete="current-password"
             autoCorrect="off"
             placeholder="********"
+            className="w-full"
           />
         </div>
         <ZodErrors error={formState?.zodErrors?.password} />
       </div>
       <div className="flex flex-col mt-8">
         <SubmitButton
-          className="w-full "
+          className="w-full"
           text="Iniciar sesión"
           loadingText="Cargando"
           color="blue"

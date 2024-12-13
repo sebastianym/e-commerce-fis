@@ -19,17 +19,15 @@ export default function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [role, setRole] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const pathname = usePathname();
+  const [logged, setLogged] = useState(false);
   const router = useTransitionRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getRoleService();
-      if (userData.data) {
-        setUserName(userData.firstName + " " + userData.lastName);
-        setRole(userData.role.type);
+      const userData = await getRoleService()
+      console.log(userData)
+      if (userData.role) {
+        setLogged(true);
       }
     };
 
@@ -40,7 +38,7 @@ export default function HomeLayout({
     <div>
       <Navbar position="static">
         <NavbarBrand>
-          <p className="font-bold text-inherit">Camisetas</p>
+          <p className="font-bold text-inherit text-xl">CamiXpress</p>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem isActive>
@@ -66,7 +64,7 @@ export default function HomeLayout({
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem>
-            {role === "authenticated" || role === "administrador" ? (
+            {logged ? (
               <LogoutButton />
             ) : (
               <Button
@@ -74,7 +72,7 @@ export default function HomeLayout({
                 variant="solid"
                 onClick={() => router.push("/login")}
               >
-                Login
+                Iniciar Sesión
               </Button>
             )}
           </NavbarItem>
