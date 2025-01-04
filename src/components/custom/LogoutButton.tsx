@@ -5,7 +5,7 @@ export function LogoutButton() {
 	const router = useTransitionRouter()
 
 	const handleLogout = async () => {
-		const url = new URL('/api/logout', process.env.NEXT_PUBLIC_BACKEND_URL);
+		const url = new URL('/api/logout', "http://localhost:3000");
 
 		try {
 			const response = await fetch(url, {
@@ -21,8 +21,8 @@ export function LogoutButton() {
 
 
 	return (
-		<div onClick={handleLogout} className="font-semibold text-sm text-white rounded-sm hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard bg-red-500">
-			<button type="submit" className="font-semibold text-sm text-white rounded-sm hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard bg-red-500">
+		<div onClick={handleLogout} className="font-semibold text-sm text-red-400 rounded-sm hover:text-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
+			<button type="submit" className="font-semibold text-sm text-red-400 rounded-sm hover:text-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
 				Cerrar sesión
 			</button>
 		</div>
