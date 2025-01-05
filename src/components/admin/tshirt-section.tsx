@@ -111,10 +111,7 @@ export function TShirtSection() {
   if (loading) {
     return (
       <div className="flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-2">
-          <CircularProgress />
-          <p>Cargando...</p>
-        </div>
+        <CircularProgress color="primary" label="Cargando ..." />
       </div>
     );
   }
@@ -130,11 +127,11 @@ export function TShirtSection() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Camisetas</h2>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="bg-indigo-600">
               <Plus className="mr-2 h-4 w-4" />
               Nueva Camiseta
             </Button>

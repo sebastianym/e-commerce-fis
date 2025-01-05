@@ -8,8 +8,8 @@ function AdminPanel() {
   return (
     <main className="px-5 md:px-8 min-h-[calc(100vh-73px)] pb-20 bg-background">
       <div className="container mx-auto py-6">
-        <div className="flex justify-between">
-          <div className="mb-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
             <h1 className="text-3xl font-bold tracking-tight">
               Panel de Administrador
             </h1>
@@ -17,7 +17,7 @@ function AdminPanel() {
               Gestiona artistas y camisetas desde este panel
             </p>
           </div>
-          <div>
+          <div className="px-1">
             <LogoutButton />
           </div>
         </div>

@@ -41,8 +41,7 @@ export default function ArtistPage() {
   if (loading) {
     return (
       <div className="flex flex-col h-screen w-auto items-center justify-center">
-        <CircularProgress />
-        <p>Cargando...</p>
+        <CircularProgress color="primary" label="Cargando ..." />
       </div>
     );
   }

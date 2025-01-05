@@ -2,17 +2,17 @@
 
 import { LogoutButton } from "@/components/custom/LogoutButton";
 import { Link } from "next-view-transitions";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getRoleService } from "@/data/services/auth/getRoleService";
 import {
+  CircularProgress,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Button,
 } from "@nextui-org/react";
 import { useTransitionRouter } from "next-view-transitions";
+import { Button } from "@/components/ui/button";
 
 export default function HomeLayout({
   children,
@@ -20,19 +20,29 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   const [logged, setLogged] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useTransitionRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getRoleService()
-      console.log(userData)
+      const userData = await getRoleService();
+      console.log(userData);
       if (userData.role) {
         setLogged(true);
       }
+      setLoading(false);
     };
 
     fetchUser();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <CircularProgress color="primary" label="Cargando ..." />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -68,8 +78,7 @@ export default function HomeLayout({
               <LogoutButton />
             ) : (
               <Button
-                color="primary"
-                variant="solid"
+                className="bg-indigo-600"
                 onClick={() => router.push("/login")}
               >
                 Iniciar Sesión

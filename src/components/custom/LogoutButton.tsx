@@ -21,8 +21,8 @@ export function LogoutButton() {
 
 
 	return (
-		<div onClick={handleLogout} className="font-semibold text-sm text-red-400 rounded-sm hover:text-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
-			<button type="submit" className="font-semibold text-sm text-red-400 rounded-sm hover:text-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
+		<div onClick={handleLogout} className="font-semibold text-sm text-red-500 rounded-sm hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
+			<button type="submit" className="font-semibold text-sm text-red-500 rounded-sm hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
 				Cerrar sesión
 			</button>
 		</div>
