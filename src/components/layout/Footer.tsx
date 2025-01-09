@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">Camisetas</h3>
+            <h3 className="text-lg font-semibold mb-4">CamiXpress</h3>
             <p className="text-gray-400">Creando camisetas únicas desde 2024</p>
           </div>
           <div>
@@ -19,17 +19,12 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
-                  Diseños
+                  Catálogo
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white">
                   Personalizar
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Sobre Nosotros
                 </a>
               </li>
             </ul>
@@ -75,7 +70,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Camisetas. Todos los derechos reservados.</p>
+          <p>&copy; 2025 Camisetas. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

@@ -122,7 +122,7 @@ export default function Home() {
       <section className="py-16 bg-gray-100" id="diseños">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Diseños Populares
+            Camisetas Populares
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((item) => (
@@ -131,12 +131,12 @@ export default function Home() {
                 className="bg-white rounded-lg shadow-md overflow-hidden"
               >
                 <img
-                  src={`https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png`}
+                  src="https://static.vecteezy.com/system/resources/previews/008/847/318/non_2x/isolated-black-t-shirt-front-free-png.png"
                   alt={`Diseño ${item}`}
                   className="w-fit h-fit object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-semibold mb-2">Diseño {item}</h3>
+                  <h3 className="font-semibold mb-2">Camiseta {item}</h3>
                   <p className="text-indigo-600 font-bold">$24.900</p>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function Home() {
                   router.push("/printsCatalogue");
               }}
             >
-              Ver Más Diseños
+              Ver Más Camisetas
             </Button>
           </div>
         </div>

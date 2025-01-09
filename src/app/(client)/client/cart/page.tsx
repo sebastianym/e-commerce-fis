@@ -1,5 +1,6 @@
 "use client";
-import { Button, Image, Input } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
+import { Image, Input } from "@nextui-org/react";
 import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
 import { Link } from 'next-view-transitions'
 
@@ -36,7 +37,7 @@ export default function Cart() {
             Tu Carrito de Compras
           </h1>
           <Link href="/catalogo">
-            <Button variant="solid" color="primary" className="flex items-center">
+            <Button variant="ghost" color="primary" className="flex items-center">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Seguir Comprando
             </Button>
@@ -95,7 +96,7 @@ export default function Cart() {
                   <td className="px-4 font-semibold">
                     <div className="flex items-center space-x-2">
                       <Button
-                        variant="flat"
+                        variant="ghost"
                         aria-label="Disminuir cantidad"
                         className="px-0"
                       >
@@ -107,7 +108,7 @@ export default function Cart() {
                         value={producto.cantidad}
                         className="w-16 text-center"
                       />
-                      <Button variant="flat" className="px-0" aria-label="Aumentar cantidad">
+                      <Button variant="ghost" className="px-0" aria-label="Aumentar cantidad">
                         <Plus className="h-4 w-4" />
                       </Button>
                     </div>
@@ -116,7 +117,7 @@ export default function Cart() {
                     <span>$50.000</span>
                   </td>
                   <td>
-                    <Button variant="light" color="danger" className="px-0" aria-label="Eliminar producto">
+                    <Button variant="ghost" color="danger" className="px-0" aria-label="Eliminar producto">
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </td>

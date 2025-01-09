@@ -48,7 +48,9 @@ export default function HomeLayout({
     <div>
       <Navbar position="static">
         <NavbarBrand>
-          <p className="font-bold text-inherit text-xl">CamiXpress</p>
+          <Link color="foreground" href="/">
+            <p className="font-bold text-inherit text-xl">CamiXpress</p>
+          </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem isActive>
@@ -57,18 +59,13 @@ export default function HomeLayout({
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="foreground" href="/#diseños">
-              Diseños
+            <Link color="foreground" href="/client/catalog">
+              Catálogo
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link color="foreground" href="/#personalizar">
+            <Link color="foreground" href="/client/personalize">
               Personalizar
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="/#sobre-nosotros">
-              Sobre Nosotros
             </Link>
           </NavbarItem>
         </NavbarContent>

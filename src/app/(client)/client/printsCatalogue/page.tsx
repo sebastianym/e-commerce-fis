@@ -1,8 +1,8 @@
 "use client";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -88,9 +88,6 @@ export default function Prints() {
     });
   return (
     <main className="min-h-screen">
-      {/* Encabezado */}
-      <Header />
-
       {/* Main Content */}
       <div className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
