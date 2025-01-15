@@ -116,13 +116,6 @@ export function TShirtSection() {
       alert(`El material '${material}' no es válido. Solo se permiten: ${allowedMaterials.join(", ")}.`);
       return;
     }
-    // Validación del sizes
-    const sizes = formData.get("sizes") as string;
-    const allowedSizes = ["S", "M", "L", "XL"];
-    if (!allowedSizes.includes(sizes)) {
-      alert(`El size '${sizes}' no es válido. Solo se permiten: ${allowedSizes.join(", ")}.`);
-      return;
-    }
 
     const body: CamisetaPostModel = {
       data: {
@@ -130,7 +123,7 @@ export function TShirtSection() {
         material: material,
         base_price: Number(formData.get("base_price")),
         slug: slug,
-        sizes: sizes,
+        sizes: formData.get("sizes") as string,
         colors: formData.get("colors") as string,
         is_available: true, // Convierte el valor a booleano
         is_active: true, // Convierte el valor a booleano
@@ -202,7 +195,7 @@ export function TShirtSection() {
             <label htmlFor="color" className="block text-sm font-medium">
               Color
             </label>
-            <input
+            <Input
               type="text"
               id="color"
               name="color"
@@ -217,7 +210,7 @@ export function TShirtSection() {
             <label htmlFor="size" className="block text-sm font-medium">
               Talla
             </label>
-            <input
+            <Input
               type="text"
               id="size"
               name="size"
@@ -232,7 +225,7 @@ export function TShirtSection() {
             <label htmlFor="material" className="block text-sm font-medium">
               Material
             </label>
-            <input
+            <Input
               type="text"
               id="material"
               name="material"
@@ -247,7 +240,7 @@ export function TShirtSection() {
             <label htmlFor="priceMin" className="block text-sm font-medium">
               Precio mínimo
             </label>
-            <input
+            <Input
               type="number"
               id="priceMin"
               name="priceMin"
@@ -262,7 +255,7 @@ export function TShirtSection() {
             <label htmlFor="priceMax" className="block text-sm font-medium">
               Precio máximo
             </label>
-            <input
+            <Input
               type="number"
               id="priceMax"
               name="priceMax"

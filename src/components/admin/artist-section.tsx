@@ -25,6 +25,7 @@ import { CircularProgress } from "@nextui-org/react";
 
 export function ArtistSection() {
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [users, setUsers] = useState<UserGetModel[]>([])
 
@@ -54,7 +55,7 @@ export function ArtistSection() {
     };
 
     fetchUsers();
-  }, []);
+  }, [reload]);
 
   const handleRoleUpdate = async (userId: number, newRole: number) => {
     
@@ -63,18 +64,19 @@ export function ArtistSection() {
       role: newRole,
     };
     try {
+      setLoading(true);
       const response = await fetchPUT<{ role: number }>({
         url, // Endpoint relativo
         body, // Datos a enviar
         error: "Error al asignar Role",
       });
-      console.log("Role asignado con éxito:", response);
-      window.alert("Role asignado con éxito");
-      window.location.reload();
-    } catch (error) {
+      // console.log("Role asignado con éxito:", response);
+      // window.alert("Role asignado con éxito");
+      setReload(!reload);
+      } catch (error) {
       console.error("Hubo un error:", error);
       window.alert("Hubo un error:" + error);
-      window.location.reload();
+      setReload(!reload);
     }
   };
   if (loading) {
