@@ -167,7 +167,7 @@ export function TShirtSection() {
                   <Input id="material" placeholder="Algodón, Lana, etc" />
                 </div>
               </div>
-              <Button type="submit" className="mt-2">
+              <Button type="submit" className="mt-2 bg-indigo-600 hover:text-indigo-800">
                 Crear Camiseta
               </Button>
             </form>

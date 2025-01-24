@@ -28,14 +28,13 @@ export function CatalogGrid() {
   useEffect(() => {
     const fetchCamisetas = async () => {
       try {
-        const url = "/api/t-shirts";
-        const response = await fetchGET({
-          url,
-          error: "Error al obtener las camisetas",
-        });
-        if (response.data) {
-          setTshirts(response.data);
+        const url = new URL("/api/t-shirts", process.env.NEXT_PUBLIC_BACKEND_URL);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error al obtener las camisetas");
         }
+        const data = await response.json();
+        setTshirts(data.data);
       } catch (error) {
         setError("Hubo un problema al cargar las camisetas.");
       } finally {

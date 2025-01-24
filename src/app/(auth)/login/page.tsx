@@ -10,7 +10,7 @@ export default function Login() {
       {/* Columna de imagen */}
       <div className="hidden lg:flex lg:w-1/2 relative">
         <Image
-          src="/login.png"
+          src="img/login.png"
           alt="Imagen de fondo"
           className="brightness-75 object-cover w-full h-full"
         />

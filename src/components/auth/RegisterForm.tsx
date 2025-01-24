@@ -26,7 +26,7 @@ export default function RegisterForm() {
         <Input
           id="firstName"
           name="firstName"
-          placeholder="firstName"
+          placeholder="Primer Nombre"
           type={"firstName"}
           autoCapitalize="none"
           autoComplete="firstName"
@@ -45,7 +45,7 @@ export default function RegisterForm() {
         <Input
           id="lastName"
           name="lastName"
-          placeholder="lastName"
+          placeholder="Primer Apellido"
           type={"lastName"}
           autoCapitalize="none"
           autoComplete="lastName"
