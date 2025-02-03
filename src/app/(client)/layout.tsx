@@ -53,26 +53,28 @@ export default function HomeLayout({
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem isActive>
+          <NavbarItem isActive={window.location.pathname === "/#inicio"}>
             <Link color="foreground" href="/#inicio">
               Inicio
             </Link>
           </NavbarItem>
-          <NavbarItem>
+          <NavbarItem isActive={window.location.pathname === "/client/catalog"}>
             <Link color="foreground" href="/client/catalog">
               Catálogo
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="/client/personalize">
-              Personalizar
+          <NavbarItem
+            isActive={window.location.pathname === "/client/artistas"}
+          >
+            <Link color="foreground" href="/client/artistas">
+              Artistas
             </Link>
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem>
             {logged ? (
-              <LogoutButton />
+              <LogoutButton onLogout={() => setLogged(false)} />
             ) : (
               <Button
                 className="bg-indigo-600"

@@ -16,7 +16,7 @@ function ArtistPanel() {
             </p>
           </div>
           <div className="px-1">
-            <LogoutButton />
+            <LogoutButton onLogout={() => window.location.reload()}  />
           </div>
         </div>
         <StampSection />

@@ -5,7 +5,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -19,7 +18,6 @@ import { CircularProgress } from "@nextui-org/react";
 
 export function CatalogGrid() {
   const [tshirts, setTshirts] = useState<CamisetaGetModel[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -28,7 +26,10 @@ export function CatalogGrid() {
   useEffect(() => {
     const fetchCamisetas = async () => {
       try {
-        const url = new URL("/api/t-shirts", process.env.NEXT_PUBLIC_BACKEND_URL);
+        const url = new URL(
+          "/api/t-shirts",
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        );
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Error al obtener las camisetas");
@@ -37,8 +38,6 @@ export function CatalogGrid() {
         setTshirts(data.data);
       } catch (error) {
         setError("Hubo un problema al cargar las camisetas.");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -53,14 +52,6 @@ export function CatalogGrid() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <CircularProgress color="primary" label="Cargando ..." />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -87,7 +78,7 @@ export function CatalogGrid() {
               />
             </div>
             <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-2 group-hover:text-indigo-600 transition-colors duration-300">
+              <h3 className="font-semibold text-lg mb-2">
                 {tshirt.attributes.name}
               </h3>
               <p className="text-indigo-600 font-bold">
@@ -99,7 +90,9 @@ export function CatalogGrid() {
                 asChild
                 className="w-full bg-indigo-600 hover:bg-indigo-700"
               >
-                <Link href={`/client/shirtPage/${tshirt.id}`}>Ver Detalles</Link>
+                <Link href={`/client/shirtPage/${tshirt.id}`}>
+                  Ver Detalles
+                </Link>
               </Button>
             </CardFooter>
           </Card>

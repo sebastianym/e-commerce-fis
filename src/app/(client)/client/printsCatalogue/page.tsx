@@ -1,6 +1,5 @@
 "use client";
 import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,56 +19,56 @@ const estampas = [
     nombre: "Estampa Montaña",
     precio: 10.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 2,
     nombre: "Estampa Playa",
     precio: 24.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 3,
     nombre: "Estampa Ciudad",
     precio: 17.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 4,
     nombre: "Estampa Bosque",
     precio: 16.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 5,
     nombre: "Estampa Desierto",
     precio: 15.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 6,
     nombre: "Estampa Galaxia",
     precio: 12.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 7,
     nombre: "Estampa Océano",
     precio: 18.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
   {
     id: 8,
     nombre: "Estampa Selva",
     precio: 30.9,
     imagen:
-      "https://png.pngtree.com/png-clipart/20230914/ourmid/pngtree-colorful-flowers-plants-sunglasses-skulls-abstract-retro-trendy-cartoon-illustrations-comics-png-image_10097795.png",
+      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
   },
 ];
 
@@ -86,6 +85,7 @@ export default function Prints() {
       if (ordenar === "precio-desc") return b.precio - a.precio;
       return 0;
     });
+    
   return (
     <main className="min-h-screen">
       {/* Main Content */}

@@ -1,6 +1,6 @@
 import { useTransitionRouter } from "next-view-transitions";
 
-export function LogoutButton() {
+export function LogoutButton({ onLogout }: { onLogout: () => void }) {
 
 	const router = useTransitionRouter()
 
@@ -11,12 +11,11 @@ export function LogoutButton() {
 			const response = await fetch(url, {
 				method: "GET",
 			});
-
 		} catch (error) {
 			console.error("Error during logout", error);
 		}
-
 		router.push("/");
+		() => onLogout();
 	};
 
 
