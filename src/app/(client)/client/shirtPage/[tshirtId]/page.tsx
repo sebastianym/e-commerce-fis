@@ -38,7 +38,7 @@ export default function ShirtPage({
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex items-center justify-center">
         <CircularProgress color="primary" label="Cargando ..." />
       </div>
     );
