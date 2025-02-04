@@ -31,32 +31,41 @@ import { fetchPOST } from "@/data/services/fetchPOST";
 import { fetchDELETE } from "@/data/services/fetchDELETE";
 import { fetchFile } from "@/data/services/fetchFile";
 import { MdError } from "react-icons/md";
+import { fetchPUT } from "@/data/services/fetchPUT";
 
 export function StampSection() {
-    const [stamps, setStamps] = useState<StampGetModel[]>([]); // Estado para almacenar las camisetas
+    const [stamps, setStamps] = useState<StampGetModel[]>([]); 
+    const [stamps_ids, setStampsIds] = useState<number[]>([]); 
+    const [user_id, setUserId] = useState<number | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchEstampas = async () => {
             try {
-                const url = "/api/stamps?populate=*"
+                const url = "/api/users/me?populate[stamps][populate]=image"
                 const response = await fetchGET({
                     url,
-                    error: "Error get camisetas",
+                    error: "Error get estampas",
                 });
-                const data = response.data;
+                setUserId(response.id)
+                const data = response.stamps;
 
                 // Validar y mapear los datos para ajustarlos al modelo
                 const mappedStamps: StampGetModel[] = data.map((item: any) => ({
                     id: item.id,
-                    name: item.attributes.name,
-                    description: item.attributes.description,
-                    rating: item.attributes.rating,
-                    image: item.attributes.image.data.attributes.url,
+                    name: item.name,
+                    description: item.description,
+                    rating: item.rating,
+                    image: item.image.url,
 
                 }));
-                console.log(mappedStamps)
+                //Getting existing stamps
+                const ids: number[] = mappedStamps.map((stamp) => (
+                    stamp.id
+                ));
+                
+                setStampsIds(ids)
                 setStamps(mappedStamps); // Asume que data es un array de camisetas
             } catch (error) {
                 console.error(error);
@@ -75,9 +84,27 @@ export function StampSection() {
         const formData = new FormData(e.target as HTMLFormElement);
 
         const file = formData.get('files');
+
+        // Validación del archivo
+        if (!file || (file instanceof File && file.size === 0)) {
+            alert("Debes seleccionar un archivo.");
+            return;
+        }
+        // validation campos
+        const requiredFields = ["name", "description"];
+        for (const field of requiredFields) {
+            const value = formData.get(field);
+            if (!value || value.toString().trim() === "") {
+                alert(`El campo "${field}" es obligatorio.`);
+                return;
+            }
+        }
+        
         const fileForm = new FormData();
         fileForm.append('files', file as Blob);
 
+
+        //fetch
         try {
             let url = "/api/upload"
             const response = await fetchFile({
@@ -85,8 +112,6 @@ export function StampSection() {
                 fileForm,
                 error: "Error al subir imagen"
             });
-
-            console.log("Respuesta 1: " + response)
 
             const image = response[0]?.id;
 
@@ -106,7 +131,22 @@ export function StampSection() {
                 body,
                 error: "Error al crear la Estampa"
             });
-            console.log(secondResponse)
+
+            //add the stamp to artist
+            const new_stamp_id = secondResponse.data.id;
+
+            url = `/api/users/${user_id}`
+            console.log(url)
+            const body_put ={
+                stamps: [...stamps_ids, new_stamp_id]
+            }
+            
+            const thirdResponse = await fetchPUT<{ stamps: number[] }>({
+                url, // Endpoint relativo
+                body_put, // Datos a enviar
+                error: "Error al asignar Role",
+            });
+
             window.alert("Estampa creada con exito")
             window.location.reload()
         } catch (error) {
@@ -164,17 +204,17 @@ export function StampSection() {
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Camisetas</h2>
+                <h2 className="text-xl font-semibold">Estampa</h2>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button className="bg-indigo-600">
                             <Plus className="mr-2 h-4 w-4" />
-                            Nueva Camiseta
+                            Nueva Estampa
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[600px]">
                         <DialogHeader>
-                            <DialogTitle>Crear Nueva Camiseta</DialogTitle>
+                            <DialogTitle>Crear Nueva Estampa</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
                             <div className="grid grid-cols-2 gap-4">

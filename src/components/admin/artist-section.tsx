@@ -60,14 +60,14 @@ export function ArtistSection() {
   const handleRoleUpdate = async (userId: number, newRole: number) => {
     
     const url = `/api/users/${userId}`;
-    const body = {
+    const body_put = {
       role: newRole,
     };
     try {
       setLoading(true);
       const response = await fetchPUT<{ role: number }>({
         url, // Endpoint relativo
-        body, // Datos a enviar
+        body_put, // Datos a enviar
         error: "Error al asignar Role",
       });
       // console.log("Role asignado con éxito:", response);

@@ -2,7 +2,7 @@ import { getAuthToken } from "./user/getToken";
 
 interface fetchPUTProps<T> {
     url: string;
-    body: T;
+    body_put: T;
     error: string;
 }
 
@@ -17,7 +17,7 @@ export async function fetchPUT<T, R = any>(props: fetchPUTProps<T>): Promise<R> 
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${authToken}`,
             },
-            body: JSON.stringify(props.body),
+            body: JSON.stringify(props.body_put),
             cache: "no-cache",
         });
         

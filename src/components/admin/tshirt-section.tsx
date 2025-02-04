@@ -26,6 +26,7 @@ import { MoreHorizontal, Plus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CircularProgress, Input } from "@nextui-org/react";
 import { fetchGET } from "@/data/services/fetchGET";
+import { fetchFile } from "@/data/services/fetchFile";
 import { CamisetaGetModel, CamisetaPostModel } from "@/lib/types/Camiseta";
 import { fetchPOST } from "@/data/services/fetchPOST";
 import { fetchDELETE } from "@/data/services/fetchDELETE";
@@ -48,13 +49,33 @@ export function TShirtSection() {
   useEffect(() => {
     const fetchCamisetas = async () => {
       try {
-        const url = "/api/t-shirts";
+        const url = "/api/t-shirts?populate=*";
         const response = await fetchGET({
           url,
           error: "Error al obtener las camisetas",
         });
         if (response.data) {
-          setCamisetas(response.data);
+          const data = response.data;
+          // Validar y mapear los datos para ajustarlos al modelo
+          const mappedCamisetas: CamisetaGetModel[] = data.map((item: any) => ({
+            id: item.id,
+            attributes: {
+              name: item.attributes.name,
+              material: item.attributes.material,
+              base_price: item.attributes.base_price,
+              slug: item.attributes.slug,
+              sizes: item.attributes.sizes,
+              colors: item.attributes.colors,
+              createdAt: item.attributes.createdAt,
+              updatedAt: item.attributes.updatedAt,
+              publishedAt: item.attributes.publishedAt,
+              is_available: item.attributes.is_available,
+              is_active: item.attributes.is_active,
+              image: item.attributes.image.data.attributes.url,
+            }
+          }));
+          console.log(mappedCamisetas)
+          setCamisetas(mappedCamisetas);
         }
       } catch (error) {
         setError("Hubo un problema al cargar las camisetas.");
@@ -62,7 +83,6 @@ export function TShirtSection() {
         setLoading(false);
       }
     };
-
     fetchCamisetas();
   }, []);
 
@@ -84,7 +104,7 @@ export function TShirtSection() {
         (isAvailable === "" || shirt.attributes.is_available === (isAvailable === "true"))
       );
     });
-  
+
     setFilteredCamisetas(filteredCamisetas); // Usa un estado para las camisetas filtradas
   };
 
@@ -92,7 +112,15 @@ export function TShirtSection() {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    const url = "/api/t-shirts";
+
+    const file = formData.get('files');
+
+    // Validación del archivo
+    if (!file || (file instanceof File && file.size === 0)) {
+      alert("Debes seleccionar un archivo.");
+      return;
+    }
+
     //Validar que no esten nulo 
     const requiredFields = ["name", "material", "base_price", "slug", "sizes", "colors"];
     for (const field of requiredFields) {
@@ -117,19 +145,37 @@ export function TShirtSection() {
       return;
     }
 
-    const body: CamisetaPostModel = {
-      data: {
-        name: formData.get("name") as string,
-        material: material,
-        base_price: Number(formData.get("base_price")),
-        slug: slug,
-        sizes: formData.get("sizes") as string,
-        colors: formData.get("colors") as string,
-        is_available: true, // Convierte el valor a booleano
-        is_active: true, // Convierte el valor a booleano
-      },
-    };
+
+    const fileForm = new FormData();
+    fileForm.append('files', file as Blob);
+
     try {
+
+      let url = "/api/upload"
+      const response_img = await fetchFile({
+        url,
+        fileForm,
+        error: "Error al subir imagen"
+      });
+
+      const image = response_img[0]?.id;
+
+
+      url = "/api/t-shirts";
+      const body: CamisetaPostModel = {
+        data: {
+          name: formData.get("name") as string,
+          material: material,
+          base_price: Number(formData.get("base_price")),
+          slug: slug,
+          sizes: formData.get("sizes") as string,
+          colors: formData.get("colors") as string,
+          is_available: true,
+          is_active: true,
+          image: image,
+        },
+      };
+
       const response = await fetchPOST<CamisetaPostModel>({
         url, // Endpoint relativo
         body, // Datos a enviar
@@ -310,6 +356,10 @@ export function TShirtSection() {
             <form onSubmit={camisetasPostSubmit} className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
+                  <label htmlFor="imagen">Imagen</label>
+                  <Input type="file" id="files" name="files" />
+                </div>
+                <div className="space-y-2">
                   <label htmlFor="nombre">Nombre camiseta</label>
                   <Input id="name" name="name" placeholder="Nombre de la camiseta" />
                 </div>
@@ -381,6 +431,13 @@ export function TShirtSection() {
                       ? "Disponible"
                       : "No disponible"}
                   </span>
+                </TableCell>
+                <TableCell className="min-w-[200px] min-h-[200px]">
+                  <img
+                    src={shirt.attributes.image}
+                    alt={`Estampa ${shirt.attributes.name}`}
+                    className="w-20 h-24 object-cover"
+                  />
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>

@@ -12,6 +12,7 @@ export interface CamisetaGetModel {
         publishedAt: string; // Lo mismo para `publishedAt`
         is_available: boolean;
         is_active: boolean;
+        image: string;
     };
 }
 
@@ -25,5 +26,6 @@ export interface CamisetaPostModel {
         colors: string;
         is_available: boolean;
         is_active: boolean;
+        image: number;
     };
 }
