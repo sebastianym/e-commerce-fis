@@ -70,7 +70,7 @@ export default function HomeLayout({
               <NavbarItem
                 isActive={window.location.pathname === "/client/artistas"}
               >
-                <Link color="foreground" href="/client/artistas">
+                <Link color="foreground" href="/client/printsCatalogue">
                   Artistas
                 </Link>
               </NavbarItem>
@@ -91,7 +91,7 @@ export default function HomeLayout({
             </NavbarContent>
           </Navbar>
 
-          <div className="flex flex-1 justify-center mb-10">{children}</div>
+          <div className="">{children}</div>
         </div>
       </div>
     );
