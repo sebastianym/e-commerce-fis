@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useTransitionRouter } from "next-view-transitions";
 import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
 
 export default function HomeLayout({
   children,
@@ -74,7 +75,12 @@ export default function HomeLayout({
             <NavbarContent justify="end">
               <NavbarItem>
                 {logged ? (
-                  <LogoutButton onLogout={() => setLogged(false)} />
+                  <div className="flex gap-4 items-center">
+                    <Link color="foreground" href="/client/cart">
+                      <ShoppingCart />
+                    </Link>
+                    <LogoutButton onLogout={() => setLogged(false)} />
+                  </div>
                 ) : (
                   <Button
                     className="bg-indigo-600"

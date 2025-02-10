@@ -43,10 +43,10 @@ export default function Prints() {
     fetchEstampas();
   }, []);
 
-  const estampasFiltradas = estampas
-    .filter((Estampa: any) =>
-      Estampa.attributes.name.toLowerCase().includes(busqueda.toLowerCase())
-    )
+  // Filtrado de estampas basado en el valor de busqueda
+  const estampasFiltradas = estampas.filter((estampa: any) =>
+    estampa.attributes.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -69,11 +69,11 @@ export default function Prints() {
   if (estampas.length > 0 && !loading && !error) {
     return (
       <main className="min-h-screen">
-        {/* Main Content */}
+        {/* Contenido Principal */}
         <div className="container mx-auto px-12 py-8">
           <div className="mb-8 space-y-4">
             <h1 className="text-4xl font-bold tracking-tight">
-              Catálogo de artistas y estampas
+              Catálogo de estampas
             </h1>
             <p className="text-muted-foreground">
               Explora las estampas de nuestros artistas y encuentra la que más
@@ -89,6 +89,8 @@ export default function Prints() {
                   id="search"
                   placeholder="Buscar estampas..."
                   className="max-w-96"
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
                 />
               </div>
             </div>
@@ -97,7 +99,7 @@ export default function Prints() {
               <main className="flex-1">
                 <div className="space-y-12">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {estampasFiltradas.map((estampa: any) => (
+                    {estampasFiltradas && estampasFiltradas.length > 0 ? (estampasFiltradas.map((estampa: any) => (
                       <Card
                         key={estampa.id}
                         className="overflow-hidden items-center"
@@ -114,13 +116,10 @@ export default function Prints() {
                             {estampa.attributes.name}
                           </h3>
                         </CardBody>
-                        <CardFooter className="p-4 pt-0">
-                          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
-                            Ver Detalles
-                          </Button>
-                        </CardFooter>
                       </Card>
-                    ))}
+                    ))) : (
+                      <p className="text-black/80">No se encontraron estampas...</p>
+                    )}
                   </div>
                 </div>
               </main>

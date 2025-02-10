@@ -17,9 +17,9 @@ function AdminPanel() {
               Gestiona artistas y camisetas desde este panel
             </p>
           </div>
-            <div className="px-1">
+          <div className="px-1">
             <LogoutButton onLogout={() => window.location.reload()} />
-            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="tshirts" className="space-y-4">

@@ -1,28 +1,24 @@
-import { cookies } from "next/headers";
-
-const CART_COOKIE_NAME = "shopping-cart"
-
 export const cartService = {
   getCart: (): any[] => {
-    const cartJson = cookies().get(CART_COOKIE_NAME)
-    return cartJson ? JSON.parse(cartJson.value) : []
+    if (typeof window === "undefined") return []; // Evita errores en SSR
+    const cartJson = localStorage.getItem("shopping-cart");
+    return cartJson ? JSON.parse(cartJson) : [];
   },
 
   addToCart: (item: any) => {
-    const currentCart = cartService.getCart()
-    const updatedCart = [...currentCart, item]
-    cookies().set(CART_COOKIE_NAME, JSON.stringify(updatedCart), { expires: 7 })
-    return updatedCart
+    const currentCart = cartService.getCart();
+    const updatedCart = [...currentCart, item];
+    localStorage.setItem("shopping-cart", JSON.stringify(updatedCart));
+    return updatedCart;
   },
 
   updateCart: (cart: any[]) => {
-    cookies().set(CART_COOKIE_NAME, JSON.stringify(cart), { expires: 7 })
-    return cart
+    localStorage.setItem("shopping-cart", JSON.stringify(cart));
+    return cart;
   },
 
   clearCart: () => {
-    cookies().set(CART_COOKIE_NAME, '', { expires: new Date(0) })
-    return []
+    localStorage.removeItem("shopping-cart");
+    return [];
   },
-}
-
+};

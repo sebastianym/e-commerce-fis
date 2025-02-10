@@ -68,34 +68,34 @@ export default function ShirtPage({
 
   const handleSaveCustomization = (
     customizedImage: string,
-    stampData: { stampId: number; position: { x: number; y: number } },
+    stampData: { stampId: number; position: { x: number; y: number } }
   ) => {
-    setCustomizedImage(customizedImage)
-    setStampData(stampData)
-  }
+    setCustomizedImage(customizedImage);
+    setStampData(stampData);
+  };
 
   const handleAddToCart = () => {
-    // if (!selectedSize) {
-    //   toast.error("Por favor selecciona una talla");
-    //   return;
-    // }
+    if (!selectedSize) {
+      toast.error("Por favor selecciona una talla");
+      return;
+    }
 
-    // if (tshirt) {
-    //   const cartItem = {
-    //     id: tshirt.id,
-    //     name: tshirt.attributes.name,
-    //     price: tshirt.attributes.base_price,
-    //     size: selectedSize,
-    //     quantity: 1,
-    //     originalImage: tshirt.attributes.image.data.attributes.url,
-    //     customizedImage: customizedImage,
-    //     ...(stampData && {
-    //       stampId: stampData.stampId,
-    //       stampPosition: stampData.position,
-    //     }),
-    //   };
-
-    //   cartService.addToCart(cartItem);
+    if (tshirt) {
+      const cartItem = {
+        id: tshirt.id,
+        name: tshirt.attributes.name,
+        price: tshirt.attributes.base_price,
+        size: selectedSize,
+        quantity: 1,
+        originalImage: tshirt.attributes.image.data.attributes.url,
+        customizedImage: customizedImage,
+        ...(stampData && {
+          stampId: stampData.stampId,
+          stampPosition: stampData.position,
+        }),
+      };
+      cartService.addToCart(cartItem);
+    }
     toast.success("¡Producto añadido al carrito con éxito!");
   };
 
