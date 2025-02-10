@@ -13,6 +13,7 @@ export interface CamisetaGetModel {
         is_available: boolean;
         is_active: boolean;
         image: any;
+        stock: number;
     };
 }
 
@@ -27,5 +28,6 @@ export interface CamisetaPostModel {
         is_available: boolean;
         is_active: boolean;
         image: number;
+        stock: number;
     };
 }

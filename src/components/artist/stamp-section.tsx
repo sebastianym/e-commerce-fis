@@ -79,6 +79,7 @@ export function StampSection() {
     }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true)
         e.preventDefault();
 
         const formData = new FormData(e.target as HTMLFormElement);
@@ -158,7 +159,7 @@ export function StampSection() {
     };
 
     const stampDeleteSubmit = async (id: string) => {
-
+        setLoading(true)
         let url = `/api/stamps/${id}?populate=*`
 
         try {

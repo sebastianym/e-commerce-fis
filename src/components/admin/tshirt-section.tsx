@@ -72,6 +72,7 @@ export function TShirtSection() {
               is_available: item.attributes.is_available,
               is_active: item.attributes.is_active,
               image: item.attributes.image.data.attributes.url,
+              stock: item.attributes.stock,
             }
           }));
           console.log(mappedCamisetas)
@@ -109,6 +110,7 @@ export function TShirtSection() {
   };
 
   const camisetasPostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
@@ -122,7 +124,7 @@ export function TShirtSection() {
     }
 
     //Validar que no esten nulo 
-    const requiredFields = ["name", "material", "base_price", "slug", "sizes", "colors"];
+    const requiredFields = ["name", "material", "base_price", "slug", "sizes", "colors", "stock"];
     for (const field of requiredFields) {
       const value = formData.get(field);
       if (!value || value.toString().trim() === "") {
@@ -173,6 +175,7 @@ export function TShirtSection() {
           is_available: true,
           is_active: true,
           image: image,
+          stock: Number(formData.get("stock")),
         },
       };
 
@@ -192,6 +195,7 @@ export function TShirtSection() {
   };
 
   const camisetasDeleteSubmit = async (id: string) => {
+    setLoading(true);
     const url = `/api/t-shirts/${id}`;
 
     try {
@@ -386,6 +390,22 @@ export function TShirtSection() {
                     Material permitido: Cotton, Linen, Polyester, Silk, Wool, Satin
                   </p>
                 </div>
+                <div className="space-y-2">
+                  <label htmlFor="stock">Stock</label>
+                  <Input
+                    id="stock"
+                    name="stock"
+                    type="number"
+                    placeholder="Stock"
+                    min="0"
+                    step="1"
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === 'e' || e.key === '.') {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </div>
               </div>
               <Button type="submit" className="mt-2 bg-indigo-600 hover:text-indigo-800">
                 Crear Camiseta
@@ -407,6 +427,7 @@ export function TShirtSection() {
               <TableHead>Talla</TableHead>
               <TableHead>Precio</TableHead>
               <TableHead>Estado</TableHead>
+              <TableHead>Stock</TableHead>
               <TableHead className="w-[50px]"></TableHead>
             </TableRow>
           </TableHeader>
@@ -432,6 +453,7 @@ export function TShirtSection() {
                       : "No disponible"}
                   </span>
                 </TableCell>
+                <TableCell>{shirt.attributes.stock}</TableCell>
                 <TableCell className="min-w-[200px] min-h-[200px]">
                   <img
                     src={shirt.attributes.image}
