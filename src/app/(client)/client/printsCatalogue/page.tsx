@@ -5,144 +5,138 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CircularProgress,
   Image,
-  Input,
-  Select,
-  SelectItem,
 } from "@nextui-org/react";
-import { useState } from "react";
-
-// Datos de ejemplo para las estampas
-const estampas = [
-  {
-    id: 1,
-    nombre: "Estampa Montaña",
-    precio: 10.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 2,
-    nombre: "Estampa Playa",
-    precio: 24.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 3,
-    nombre: "Estampa Ciudad",
-    precio: 17.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 4,
-    nombre: "Estampa Bosque",
-    precio: 16.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 5,
-    nombre: "Estampa Desierto",
-    precio: 15.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 6,
-    nombre: "Estampa Galaxia",
-    precio: 12.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 7,
-    nombre: "Estampa Océano",
-    precio: 18.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-  {
-    id: 8,
-    nombre: "Estampa Selva",
-    precio: 30.9,
-    imagen:
-      "https://1000marcas.net/wp-content/uploads/2022/02/XO-Logo.jpg",
-  },
-];
+import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
+import { MdError } from "react-icons/md";
 
 export default function Prints() {
   const [busqueda, setBusqueda] = useState("");
   const [ordenar, setOrdenar] = useState("relevancia");
+  const [estampas, setEstampas] = useState<any>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEstampas = async () => {
+      try {
+        const url = new URL(
+          "/api/stamps?populate=*",
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        );
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error al obtener las estampas");
+        }
+        const data = await response.json();
+        console.log(data.data);
+        setEstampas(data.data);
+      } catch (error) {
+        setError("Hubo un problema al cargar las estampas.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEstampas();
+  }, []);
 
   const estampasFiltradas = estampas
-    .filter((Estampa) =>
-      Estampa.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    .filter((Estampa: any) =>
+      Estampa.attributes.name.toLowerCase().includes(busqueda.toLowerCase())
     )
-    .sort((a, b) => {
-      if (ordenar === "precio-asc") return a.precio - b.precio;
-      if (ordenar === "precio-desc") return b.precio - a.precio;
-      return 0;
-    });
-    
-  return (
-    <main className="min-h-screen">
-      {/* Main Content */}
-      <div className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Catálogo de estampas
-        </h1>
 
-        {/* Filtros y Búsqueda */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0 md:space-x-4">
-          <div className="w-full md:w-1/3">
-            <Input
-              type="text"
-              placeholder="Buscar estampas..."
-              className="w-full"
-            />
-          </div>
-          <Select placeholder="Ordenar por" className="w-96">
-            <SelectItem key={1} value="relevancia">
-              Relevancia
-            </SelectItem>
-            <SelectItem key={2} value="precio-asc">
-              Precio: Menor a Mayor
-            </SelectItem>
-            <SelectItem key={3} value="precio-desc">
-              Precio: Mayor a Menor
-            </SelectItem>
-          </Select>
-        </div>
-
-        {/* Grid de estampas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {estampasFiltradas.map((estampa) => (
-            <Card key={estampa.id} className="overflow-hidden items-center">
-              <Image
-                src={estampa.imagen}
-                alt={estampa.nombre}
-                width={300}
-                height={300}
-                className="w-fit h-fit justify-center object-cover"
-              />
-              <CardBody className="p-4">
-                <h3 className="text-lg font-semibold mb-2">{estampa.nombre}</h3>
-                <p className="text-gray-600">${estampa.precio.toFixed(3)}</p>
-              </CardBody>
-              <CardFooter className="p-4 pt-0">
-                <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
-                  Ver Detalles
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <CircularProgress />
+        <p className="text-black/80">Cargando catálogo...</p>
       </div>
+    );
+  }
 
-      {/* Pie de página */}
-      <Footer />
-    </main>
-  );
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <MdError className="mr-2 h-6 w-6" />
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (estampas.length > 0 && !loading && !error) {
+    return (
+      <main className="min-h-screen">
+        {/* Main Content */}
+        <div className="container mx-auto px-12 py-8">
+          <div className="mb-8 space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight">
+              Catálogo de artistas y estampas
+            </h1>
+            <p className="text-muted-foreground">
+              Explora las estampas de nuestros artistas y encuentra la que más
+              te guste.
+            </p>
+            {/* Filtros y Búsqueda */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <label htmlFor="search" className="sr-only">
+                  Buscar estampas
+                </label>
+                <Input
+                  id="search"
+                  placeholder="Buscar estampas..."
+                  className="max-w-96"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Grid de estampas */}
+              <main className="flex-1">
+                <div className="space-y-12">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    {estampasFiltradas.map((estampa: any) => (
+                      <Card
+                        key={estampa.id}
+                        className="overflow-hidden items-center"
+                      >
+                        <Image
+                          src={estampa.attributes.image.data.attributes.url}
+                          alt={estampa.attributes.name}
+                          width={300}
+                          height={300}
+                          className="w-fit h-fit justify-center object-cover"
+                        />
+                        <CardBody className="p-4">
+                          <h3 className="text-lg font-semibold mb-2">
+                            {estampa.attributes.name}
+                          </h3>
+                        </CardBody>
+                        <CardFooter className="p-4 pt-0">
+                          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                            Ver Detalles
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+
+        {/* Pie de página */}
+        <Footer />
+      </main>
+    );
+  } else {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <p className="text-black/80">No se encontraron estampas...</p>
+      </div>
+    );
+  }
 }

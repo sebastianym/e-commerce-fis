@@ -55,21 +55,17 @@ export default function HomeLayout({
               </Link>
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-              <NavbarItem isActive={window.location.pathname === "/#inicio"}>
-                <Link color="foreground" href="/#inicio">
+              <NavbarItem>
+                <Link color="foreground" href="/">
                   Inicio
                 </Link>
               </NavbarItem>
-              <NavbarItem
-                isActive={window.location.pathname === "/client/catalog"}
-              >
+              <NavbarItem>
                 <Link color="foreground" href="/client/catalog">
                   Catálogo
                 </Link>
               </NavbarItem>
-              <NavbarItem
-                isActive={window.location.pathname === "/client/artistas"}
-              >
+              <NavbarItem>
                 <Link color="foreground" href="/client/printsCatalogue">
                   Artistas
                 </Link>

@@ -2,6 +2,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { getRoleService } from "@/data/services/auth/getRoleService";
+import { CamisetaGetModel } from "@/lib/types/Camiseta";
 import { Button } from "@nextui-org/react";
 import { ChevronRight, Star } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
@@ -9,6 +10,8 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [role, setRole] = useState("");
+  const [tshirts, setTshirts] = useState<CamisetaGetModel[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useTransitionRouter();
   //authenticated
   useEffect(() => {
@@ -20,7 +23,28 @@ export default function Home() {
       }
     };
 
+    const fetchCamisetas = async () => {
+      try {
+        const url = new URL(
+          "/api/t-shirts?populate=*",
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        );
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error al obtener las camisetas");
+        }
+        const data = await response.json();
+        setTshirts(data.data);
+        console.log(data.data);
+      } catch (error) {
+        console.log("Hubo un problema al cargar las camisetas.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchUser();
+    fetchCamisetas();
   }, []);
 
   return (
@@ -125,19 +149,25 @@ export default function Home() {
             Camisetas Populares
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((item) => (
+            {tshirts.slice(0, 4).map((tshirt) => (
               <div
-                key={item}
+                key={tshirt.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden"
               >
-                <img
-                  src="https://static.vecteezy.com/system/resources/previews/008/847/318/non_2x/isolated-black-t-shirt-front-free-png.png"
-                  alt={`Diseño ${item}`}
-                  className="w-fit h-fit object-cover"
-                />
+                <div className="relative aspect-square overflow-hidden flex items-center justify-center">
+                  <img
+                    src={tshirt.attributes.image.data.attributes.url}
+                    alt={`Diseño ${tshirt.attributes.name}`}
+                    className="w-fit h-fit object-cover"
+                  />
+                </div>
                 <div className="p-4">
-                  <h3 className="font-semibold mb-2">Camiseta {item}</h3>
-                  <p className="text-indigo-600 font-bold">$24.900</p>
+                  <h3 className="font-semibold mb-2">
+                    {tshirt.attributes.name}
+                  </h3>
+                  <p className="text-indigo-600 font-bold">
+                    {tshirt.attributes.base_price}
+                  </p>
                 </div>
               </div>
             ))}
@@ -146,10 +176,7 @@ export default function Home() {
             <Button
               className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition duration-300"
               onClick={() => {
-                !role && router.push("/login");
-                role &&
-                  role === "authenticated" &&
-                  router.push("/printsCatalogue");
+                router.push("/client/catalog");
               }}
             >
               Ver Más Camisetas

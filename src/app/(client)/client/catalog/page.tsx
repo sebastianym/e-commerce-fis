@@ -29,11 +29,12 @@ export default function CatalogPage() {
   const [tshirts, setTshirts] = useState<CamisetaGetModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [sortValue, setSortValue] = useState<string>("newest");
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(tshirts.length / itemsPerPage);
 
+  // Función para normalizar cadenas (remover tildes, pasar a minúsculas, etc.)
   const normalizeString = (str: string) => {
     return str
       .toLowerCase()
@@ -41,17 +42,45 @@ export default function CatalogPage() {
       .replace(/[\u0300-\u036f]/g, "");
   };
 
+  // Filtrado según el término de búsqueda
   const filteredTshirts = tshirts.filter((tshirt) =>
     normalizeString(tshirt.attributes.name).includes(
       normalizeString(searchTerm)
     )
   );
 
+  // Ordenamiento según el valor seleccionado en el select.
+  // Se asume que para "newest" se usa el id (o se puede usar un campo "createdAt")
+  // y que para "popular" existe un campo "popularity" en los atributos.
+  const sortedTshirts = [...filteredTshirts].sort((a, b) => {
+    switch (sortValue) {
+      case "newest":
+        return b.id - a.id;
+      case "price-low":
+        return a.attributes.base_price - b.attributes.base_price;
+      case "price-high":
+        return b.attributes.base_price - a.attributes.base_price;
+      default:
+        return 0;
+    }
+  });
+
+  // Reiniciamos la página actual al cambiar el filtro o el orden, para evitar inconsistencias en la paginación.
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, sortValue]);
+
+  const totalPages = Math.ceil(sortedTshirts.length / itemsPerPage);
+  const paginatedTshirts = sortedTshirts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   useEffect(() => {
     const fetchCamisetas = async () => {
       try {
         const url = new URL(
-          "/api/t-shirts",
+          "/api/t-shirts?populate=*",
           process.env.NEXT_PUBLIC_BACKEND_URL
         );
         const response = await fetch(url);
@@ -74,16 +103,11 @@ export default function CatalogPage() {
     setCurrentPage(page);
   };
 
-  const paginatedTshirts = tshirts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   if (loading) {
     return (
       <div className="flex flex-col justify-center items-center">
         <CircularProgress />
-        <p className="text-black/80">Cargando catalogo...</p>
+        <p className="text-black/80">Cargando catálogo...</p>
       </div>
     );
   }
@@ -122,7 +146,10 @@ export default function CatalogPage() {
                 />
               </div>
               <div className="w-full sm:w-[200px]">
-                <Select defaultValue="newest">
+                <Select
+                  defaultValue="newest"
+                  onValueChange={(value) => setSortValue(value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Ordenar por" />
                   </SelectTrigger>
@@ -134,7 +161,6 @@ export default function CatalogPage() {
                     <SelectItem value="price-high">
                       Precio: Mayor a Menor
                     </SelectItem>
-                    <SelectItem value="popular">Más populares</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -145,82 +171,90 @@ export default function CatalogPage() {
               <Suspense fallback={<CatalogSkeleton />}>
                 <div className="space-y-12">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {paginatedTshirts.map((tshirt) => (
-                      <Card
-                        key={tshirt.id}
-                        className="overflow-hidden group hover:shadow-xl transition-shadow duration-300"
-                      >
-                        <div className="relative aspect-square overflow-hidden flex items-center justify-center">
-                          <img
-                            src="https://static.vecteezy.com/system/resources/previews/008/847/318/non_2x/isolated-black-t-shirt-front-free-png.png"
-                            alt={tshirt.attributes.name}
-                            className="w-fit h-fit object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold text-lg mb-2">
-                            {tshirt.attributes.name}
-                          </h3>
-                          <p className="text-indigo-600 font-bold">
-                            $
-                            {tshirt.attributes.base_price.toLocaleString(
-                              "es-ES"
-                            )}
-                          </p>
-                        </CardContent>
-                        <CardFooter className="p-4 pt-0">
-                          <Button
-                            asChild
-                            className="w-full bg-indigo-600 hover:bg-indigo-700"
-                          >
-                            <Link href={`/client/shirtPage/${tshirt.id}`}>
-                              Ver Detalles
-                            </Link>
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <Button disabled={currentPage == 1} variant="ghost">
-                          <PaginationPrevious
-                            href="#"
-                            onClick={() =>
-                              currentPage != 1 &&
-                              handlePageChange(currentPage - 1)
-                            }
-                          />
-                        </Button>
-                      </PaginationItem>
-                      {Array.from({ length: totalPages }, (_, index) => (
-                        <PaginationItem key={index}>
-                          <PaginationLink
-                            href="#"
-                            isActive={currentPage === index + 1}
-                            onClick={() => handlePageChange(index + 1)}
-                          >
-                            {index + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <Button
-                          disabled={currentPage === totalPages}
-                          variant="ghost"
+                    {paginatedTshirts && paginatedTshirts.length > 0 ? (
+                      paginatedTshirts.map((tshirt) => (
+                        <Card
+                          key={tshirt.id}
+                          className="overflow-hidden group hover:shadow-xl transition-shadow duration-300"
                         >
-                          <PaginationNext
-                            href="#"
-                            onClick={() =>
-                              currentPage != totalPages &&
-                              handlePageChange(currentPage + 1)
-                            }
-                          />
-                        </Button>
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
+                          <div className="relative aspect-square overflow-hidden flex items-center justify-center">
+                            <img
+                              src={tshirt.attributes.image.data.attributes.url}
+                              alt={tshirt.attributes.name}
+                              className="w-fit h-fit object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                          <CardContent className="p-4">
+                            <h3 className="font-semibold text-lg mb-2">
+                              {tshirt.attributes.name}
+                            </h3>
+                            <p className="text-indigo-600 font-bold">
+                              $
+                              {tshirt.attributes.base_price.toLocaleString(
+                                "es-ES"
+                              )}
+                            </p>
+                          </CardContent>
+                          <CardFooter className="p-4 pt-0">
+                            <Button
+                              asChild
+                              className="w-full bg-indigo-600 hover:bg-indigo-700"
+                            >
+                              <Link href={`/client/shirtPage/${tshirt.id}`}>
+                                Ver Detalles
+                              </Link>
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      ))
+                    ) : (
+                      <p className="flex items-center justify-center text-black/80">
+                        No se encontraron camisetas...
+                      </p>
+                    )}
+                  </div>
+                  {paginatedTshirts && paginatedTshirts.length > 0 ? (
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <Button disabled={currentPage === 1} variant="ghost">
+                            <PaginationPrevious
+                              href="#"
+                              onClick={() =>
+                                currentPage !== 1 &&
+                                handlePageChange(currentPage - 1)
+                              }
+                            />
+                          </Button>
+                        </PaginationItem>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                          <PaginationItem key={index}>
+                            <PaginationLink
+                              href="#"
+                              isActive={currentPage === index + 1}
+                              onClick={() => handlePageChange(index + 1)}
+                            >
+                              {index + 1}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <Button
+                            disabled={currentPage === totalPages}
+                            variant="ghost"
+                          >
+                            <PaginationNext
+                              href="#"
+                              onClick={() =>
+                                currentPage !== totalPages &&
+                                handlePageChange(currentPage + 1)
+                              }
+                            />
+                          </Button>
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  ) : null}
                 </div>
               </Suspense>
             </main>
