@@ -4,8 +4,11 @@ import { Image, Input } from "@nextui-org/react";
 import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import React, { useEffect, useState } from "react";
+import { useTransitionRouter } from "next-view-transitions";
 
 export default function Cart() {
+  const router = useTransitionRouter();
+
   // Inicializamos el estado leyendo el carrito del localStorage (si existe)
   const [productosCarrito, setProductosCarrito] = useState<any[]>(() => {
     if (typeof window !== "undefined") {
@@ -175,7 +178,10 @@ export default function Cart() {
           </div>
         </div>
         <div className="mt-8 flex justify-end">
-          <Button className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white">
+          <Button
+            className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={() => router.push("/client/payment")}
+          >
             Proceder al Pago
           </Button>
         </div>

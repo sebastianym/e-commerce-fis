@@ -1,29 +1,26 @@
+// LogoutButton.tsx
 import { useTransitionRouter } from "next-view-transitions";
+import { useAuth } from "@/components/auth/authContext";
 
-export function LogoutButton({ onLogout }: { onLogout: () => void }) {
+export function LogoutButton() {
+  const router = useTransitionRouter();
+  const { setLogged } = useAuth();
 
-	const router = useTransitionRouter()
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "GET" });
+    } catch (error) {
+      console.error("Error during logout", error);
+    }
+    // Actualiza el estado global de autenticación:
+    setLogged(false);
+    // Navega a la página principal:
+    router.push("/");
+  };
 
-	const handleLogout = async () => {
-		const url = new URL('/api/logout', "http://localhost:3000");
-
-		try {
-			const response = await fetch(url, {
-				method: "GET",
-			});
-		} catch (error) {
-			console.error("Error during logout", error);
-		}
-		router.push("/");
-		() => onLogout();
-	};
-
-
-	return (
-		<div onClick={handleLogout} className="font-semibold text-sm text-red-500 rounded-sm hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
-			<button type="submit" className="font-semibold text-sm text-red-500 rounded-sm hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700 nav-link-dashboard">
-				Cerrar sesión
-			</button>
-		</div>
-	);
+  return (
+    <button onClick={handleLogout} className="font-semibold text-sm text-red-500 rounded-sm hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-700">
+      Cerrar sesión
+    </button>
+  );
 }

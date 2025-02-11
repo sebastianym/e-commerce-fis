@@ -14,13 +14,14 @@ import {
 import { useTransitionRouter } from "next-view-transitions";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import { useAuth } from "@/components/auth/authContext";
 
 export default function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [logged, setLogged] = useState(false);
+  const { logged, setLogged } = useAuth();
   const [loading, setLoading] = useState(true);
   const router = useTransitionRouter();
 
@@ -79,7 +80,7 @@ export default function HomeLayout({
                     <Link color="foreground" href="/client/cart">
                       <ShoppingCart />
                     </Link>
-                    <LogoutButton onLogout={() => setLogged(false)} />
+                    <LogoutButton />
                   </div>
                 ) : (
                   <Button

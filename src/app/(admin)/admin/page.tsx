@@ -18,7 +18,7 @@ function AdminPanel() {
             </p>
           </div>
           <div className="px-1">
-            <LogoutButton onLogout={() => window.location.reload()} />
+            <LogoutButton />
           </div>
         </div>
 

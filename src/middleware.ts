@@ -27,6 +27,7 @@ function isAuthorized(path: string, role: string | undefined): boolean {
 
 export async function middleware(request: NextRequest) {
   const user = await getUserMeLoader();
+  console.log(user);
   const currentPath = request.nextUrl.pathname;
 
   // if (user && "data" in user && user.data && user.data.role) {
