@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export const GET = () => {
     const allCookies = cookies().getAll();
-    const cookieDomain = process.env.HOST ?? 'localhost';
+    const cookieDomain = process.env.HOST// ?? 'localhost';
     //const cookieDomain = 'localhost';
     
 
