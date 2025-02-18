@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Tienda de Camisetas Personalizables**
 
-## Getting Started
+## Descripción
 
-First, run the development server:
+Este proyecto corresponde al desarrollo de un **frontend** para una tienda de **camisetas personalizables** realizado como parte de la materia **Fundamentos de Ingeniería de Software** de la **Universidad Distrital Francisco José de Caldas**. La tienda permite a los usuarios diseñar y personalizar sus camisetas, facilitando la selección de modelos y estampados, y gestionando el proceso de compra de forma sencilla y eficiente.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+El proyecto fue desarrollado en colaboración con mi compañero **Gyuhee Jo**, con el objetivo de aplicar los conocimientos adquiridos en el curso.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologías utilizadas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Este proyecto fue desarrollado utilizando las siguientes tecnologías:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js**: Framework React para la construcción de interfaces de usuario y la optimización del rendimiento.
+- **ShadCN**: Componentes UI para un diseño elegante y fácil de usar.
+- **NextUI**: Framework de diseño para Next.js con componentes modernos y responsivos.
+- **React**: Biblioteca de JavaScript para la construcción de interfaces de usuario interactivas.
+- **Tailwind CSS**: Para el estilo y el diseño de la aplicación.
 
-## Learn More
+Además, el sistema está conectado a un **backend** alojado en Render, utilizando **Strapi** como CMS para la gestión de datos y la lógica del servidor.
 
-To learn more about Next.js, take a look at the following resources:
+## Instalación
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clona el repositorio:**
 
-## Deploy on Vercel
+  ```bash
+  git clone https://github.com/sebastianym/e-commerce-fis.git
+  ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Instala las dependencias y ejecuta el proyecto::
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  ```bash
+  npm install
+  npm run dev
+  ```
+
+Una vez iniciado, el servidor se ejecutará en http://localhost:3000.
+   
+## Backend
+El backend está alojado en Render y utiliza Strapi para gestionar los datos del sistema. Puedes acceder a la API del backend en la siguiente URL:
+
+## Backend (API): https://stripe-backend-bojy.onrender.com
+Este backend se encarga de gestionar el almacenamiento de productos, usuarios y registros de pedidos, proporcionando la funcionalidad necesaria para el sistema de frontend.
+
+## Capturas de pantalla
+Algunas capturas de pantalla del proyecto 
+
+![image](https://github.com/user-attachments/assets/b6903928-966f-48d0-bffb-75e34c5d231b)
+
+![image](https://github.com/user-attachments/assets/ef50e67f-e3c0-4a49-9158-ae9e1a2fad64)
+
+![image](https://github.com/user-attachments/assets/65ceb74b-5143-428d-98b9-287dbfb7c1f6)
+
+![image](https://github.com/user-attachments/assets/ed0de02a-5560-48fb-b798-c312bbd13d43)
+
+![image](https://github.com/user-attachments/assets/6a3fd5d1-481d-47d8-a64f-83a015ca1640)
+
+## Colaboradores
+
+[Gyuhee Jo]
+
+[Sebastián Yepes]
